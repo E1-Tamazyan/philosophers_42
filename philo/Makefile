@@ -2,9 +2,9 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 
-SRCS =  main.c
+SRCS =  main.c checks.c
 
-INCS = push_swap.h
+INCS = philo.h
 
 NAME = philo
 

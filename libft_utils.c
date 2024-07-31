@@ -1,20 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   libft_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/23 16:31:52 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 19:24:30 by etamazya         ###   ########.fr       */
+/*   Created: 2024/07/31 19:31:18 by etamazya          #+#    #+#             */
+/*   Updated: 2024/07/31 19:36:40 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+int ft_atoi(char *str)
 {
-    check_argv(argc, argv);
-    
-    return (0);
+	int	num;
+	int	sign;
+
+	num = 0;
+	sign = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = -sign;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		num = (num * 10) + (*str - '0');
+		str++;
+	}
+	return (num * sign);
 }

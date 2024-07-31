@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/23 16:31:52 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 20:02:36 by etamazya         ###   ########.fr       */
+/*   Created: 2024/07/31 19:59:14 by etamazya          #+#    #+#             */
+/*   Updated: 2024/07/31 20:01:58 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int main(int argc, char **argv)
+void    my_current_time(void)
 {
-    args_inspect(argc, argv);
-    // my_current_time();
-    return (0);
+    long int    i;
+
+    i = 0;
 }

@@ -6,22 +6,21 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:01:29 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 19:37:36 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/07/31 19:51:41 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void check_argv(int argc, char **argv)
+void    args_inspect(int argc, char **argv)
 {
-    size_t i;
-    size_t j;
+    size_t  i;
+    size_t  j;
 
     if (argc == 1 || (argc == 2 &&  !(argv[1][0])))
         exit(1);
     if (argc == 5 || argc == 6)
     {
-        printf("Success\n");
         i = 1;
         while (argv[i])
         {

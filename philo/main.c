@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 16:31:52 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 20:02:36 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/02 13:20:12 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 int main(int argc, char **argv)
 {
     args_inspect(argc, argv);
-    // my_current_time();
+    my_current_time();
     return (0);
 }

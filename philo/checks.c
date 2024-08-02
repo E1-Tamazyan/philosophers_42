@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:01:29 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 19:51:41 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:50:55 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void    args_inspect(int argc, char **argv)
         }
         return ;
     }
-    exit (write(1, "Invalid amount of arguments\n", 28));
+    exit (printf("Invalid amount of arguments\n"));
 }

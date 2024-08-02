@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/07/31 20:03:03 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/02 13:13:06 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <sys/time.h>
 
 typedef struct      s_philo
 {
-    int             index;
+    int             seat;
     int             has_fork_1;
     int             has_fork_2;
     int             *can_eat;
@@ -37,7 +38,7 @@ typedef struct      s_info
     int             think_duration;
 }                   t_info;
 
-void    args_inspect(int argc, char **argv);
-void    my_current_time(void);
+void            args_inspect(int argc, char **argv);
+unsigned long   my_current_time(void);
 
 #endif

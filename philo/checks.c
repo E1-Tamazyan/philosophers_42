@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:01:29 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/02 14:12:52 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:24:02 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void    args_inspect(int argc, char **argv)
                     exit (1);
                 j++;
             }
-            printf("argv[i] == %s\n", argv[i]);
             i++;
         }
         return ;

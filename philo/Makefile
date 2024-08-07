@@ -2,7 +2,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 
-SRCS =  main.c checks.c utils.c libft_utils.c
+SRCS =  main.c checks.c libft_utils.c regimen.c
 
 INCS = philo.h
 

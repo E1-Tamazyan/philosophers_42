@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:01:29 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/07 18:51:59 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/09 19:50:55 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void    args_distribute(t_info *info, char **argv)
 
 void	init_philos(t_info *info)
 {
+	(void)info;
 	int	i;
 
 	i = -1;
@@ -79,18 +80,16 @@ void	init_philos(t_info *info)
 		exit (1);
 	while (++i < info->amount_philo)
 	{
-		info->philos[i].info = info;
 		info->philos[i].seat = i;
-		pthread_mutex_init(info->philos[i].fork_r, NULL);
-		pthread_mutex_init(info->philos[i].fork_l, NULL);
-		pthread_mutex_init(info->philos[i].last_meal_m, NULL);
-		pthread_mutex_init(info->philos[i].meal_count_m, NULL);
+		info->philos[i].info = info;	
 		pthread_create(&info->philos[i].thread, NULL, start_day, &info->philos[i]);
-		if (i == info->amount_philo)
-			info->philos[i].fork_l = info->philos[0].fork_r;
-		else
-			info->philos[i].fork_l = info->philos[i + 1].fork_r;
-		printf("Hello_%d\n", i);
 	}
+	// i = 0;
+	// while (i < (info -> amount_philo))
+	// {
+	// 	pthread_mutex_init(&(info->philos[i].last_meal_m), NULL);
+	// 	pthread_mutex_init(&(info->philos[i].meal_count_m), NULL);
+	// 	i++;
+	// }
+	printf("Success\n");
 }
-// don't forget to pthread_exit() function  at the end of the starting routine

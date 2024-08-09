@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/07 19:33:33 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/09 19:42:59 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ typedef struct  s_philo
     long            last_meal;
     int              meal_count;
     pthread_t       thread; //used in init  
-    pthread_mutex_t *last_meal_m;
-    pthread_mutex_t *meal_count_m;
-    pthread_mutex_t *fork_r;
-    pthread_mutex_t *fork_l; // keep this or the bottom one
+    pthread_mutex_t last_meal_m;
+    pthread_mutex_t meal_count_m;
+    pthread_mutex_t *fork_r_mutex;
+    pthread_mutex_t *fork_l_mutex; // keep this or the bottom one
     struct s_info   *info;
 }                   t_philo;
 

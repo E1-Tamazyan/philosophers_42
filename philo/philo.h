@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/09 19:42:59 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/14 10:52:45 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,21 @@ typedef struct      s_info
     int             die_duration;
     int             eat_duration;
     int             sleep_duration;
-    int             dead;
-    pthread_mutex_t *dead_mutex;
+    int             dead_ocrd;
+    pthread_mutex_t *dead_ocrd_mutex;
     int             amount_eat;
     pthread_mutex_t *forks;
     t_philo         *philos;
+    pthread_mutex_t *print_mutex;
     pthread_mutex_t sync_mutex;
 }                   t_info;
 
 int             ft_atoi(char *str);
-void            args_inspect(int argc, char **argv);
 unsigned long   my_curr_time(void);
+void            args_inspect(int argc, char **argv);
 void            args_distribute(t_info *info, char **argv);
 void            init_philos(t_info *info);
 void            *start_day(void *info);
+void            print_msg(t_info *info, char *s, unsigned long long time);
 
 #endif

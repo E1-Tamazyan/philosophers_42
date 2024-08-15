@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/14 10:52:45 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/15 20:37:29 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ struct          s_info;
 typedef struct  s_philo
 {
     int             seat;
-    long            last_meal;
-    int              meal_count;
-    pthread_t       thread; //used in init  
-    pthread_mutex_t last_meal_m;
-    pthread_mutex_t meal_count_m;
+    unsigned long   last_meal;
+    int             meal_counter;
+    pthread_t       thread;
+    pthread_mutex_t last_meal_mutex;
+    pthread_mutex_t meal_counter_mutex;
     pthread_mutex_t *fork_r_mutex;
-    pthread_mutex_t *fork_l_mutex; // keep this or the bottom one
+    pthread_mutex_t *fork_l_mutex;
     struct s_info   *info;
 }                   t_philo;
 
@@ -42,21 +42,31 @@ typedef struct      s_info
     int             die_duration;
     int             eat_duration;
     int             sleep_duration;
-    int             dead_ocrd;
-    pthread_mutex_t *dead_ocrd_mutex;
+    int             end;
+    pthread_mutex_t *end_flag;
     int             amount_eat;
     pthread_mutex_t *forks;
     t_philo         *philos;
     pthread_mutex_t *print_mutex;
-    pthread_mutex_t sync_mutex;
+    pthread_mutex_t sync_mutex; //dunno where to use
 }                   t_info;
 
-int             ft_atoi(char *str);
+// *parsing*
+int     ft_atoi(char *str);
+short   args_inspect(int argc, char **argv);
+short   args_distribute(t_info *info, char **argv);
+
+// *data_init*
+short   init_philos(t_info *info);
+
+// *check*
+short   is_fine(t_philo philo->info);
+int     dead_occurred(t_info *info)
+
+// *main*
 unsigned long   my_curr_time(void);
-void            args_inspect(int argc, char **argv);
-void            args_distribute(t_info *info, char **argv);
-void            init_philos(t_info *info);
-void            *start_day(void *info);
+void            *start_simulation(void *info);
 void            print_msg(t_info *info, char *s, unsigned long long time);
+// short	        eating(t_philo *philo, pthread_mutex_t *l_fork, pthread_mutex_t *r_fork);
 
 #endif

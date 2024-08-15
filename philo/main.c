@@ -6,11 +6,13 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 16:31:52 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/09 19:50:24 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:02:24 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+//1 function
 
 int main(int argc, char **argv)
 {
@@ -18,8 +20,12 @@ int main(int argc, char **argv)
     int     i;
         
     i = 0;
-    args_inspect(argc, argv);
-    args_distribute(&info, argv);
-    init_philos(&info);
+    if(!args_inspect(argc, argv))
+        return (1 && printf("Invalid arguments\n"));
+    if(!args_distribute(&info, argv))
+        return (1);
+    if(!init_philos(&info))
+        return (1);
+    printf("Success\n");
     return (0);
 }

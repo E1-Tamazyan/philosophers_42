@@ -6,11 +6,13 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:10:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/12 11:12:01 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/15 20:44:02 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+//3 functions
 
 unsigned long    my_curr_time(void)
 {
@@ -22,46 +24,49 @@ unsigned long    my_curr_time(void)
     return (dur);
 }
 
-void    args_distribute(t_info *info, char **argv)
+short	args_distribute(t_info *info, char **argv)
 {
 	info->amount_philo = ft_atoi(argv[1]);
 	info->die_duration = ft_atoi(argv[2]);
 	info->eat_duration = ft_atoi(argv[3]);
 	info->sleep_duration = ft_atoi(argv[4]);
-	info->amount_eat = -1;
+	info->amount_eat = 0;
+	//SIGSEGV hereeeeee // ==4958==The signal is caused by a WRITE memory access.
+						// ==4958==Hint: address points to the zero page.
+	// pthread_mutex_init(info->dead_ocrd_mutex, NULL);
+	// pthread_mutex_init(info->print_mutex, NULL);
 	if (argv[5])
 	{
 		info->amount_eat = ft_atoi(argv[5]);
 		if (!info->amount_eat)
-			exit(1);
+			return (0);
 	}
-	//why do we need this: "IDK":
-	pthread_mutex_init(&info->sync_mutex, NULL);
-	info->start_day = my_curr_time();
-	return ;
+	return (1);
 }
 
-void	init_philos(t_info *info)
+short	init_philos(t_info *info)
 {
-	(void)info;
 	int	i;
 
 	i = -1;
 	info->philos = malloc(sizeof(t_philo) * info->amount_philo);
 	if (!info->philos)
-		exit (1);
+		return (0);
+	info->forks = malloc(sizeof(pthread_mutex_t) * info->amount_philo);
+	if (!info->forks)
+		return (free(info->philos), 0);
 	while (++i < info->amount_philo)
 	{
 		info->philos[i].seat = i;
-		info->philos[i].info = info;	
-		pthread_create(&info->philos[i].thread, NULL, start_day, &info->philos[i]);
+		info->philos[i].info = info;
+		info->philos[i].last_meal = 0;
+		info->philos[i].meal_counter = 0;
+		pthread_mutex_init(&(info->philos[i].last_meal_mutex), NULL);
+		pthread_mutex_init(&(info->philos[i].meal_counter_mutex), NULL);
+		pthread_mutex_init(&(info->forks[i]), NULL);
 	}
-	// i = 0;
-	// while (i < (info -> amount_philo))
-	// {
-	// 	pthread_mutex_init(&(info->philos[i].last_meal_m), NULL);
-	// 	pthread_mutex_init(&(info->philos[i].meal_count_m), NULL);
-	// 	i++;
-	// }
-	printf("Success\n");
+	i = -1;
+	while (++i < info->amount_philo)
+		pthread_create(&info->philos[i].thread, NULL, start_simulation, &info->philos[i]);
+	return (1);
 }

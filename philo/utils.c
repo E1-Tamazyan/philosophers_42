@@ -6,14 +6,13 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 11:10:51 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/15 20:44:02 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:31:40 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 //5 functions
-
 unsigned long    my_curr_time(void)
 {
     unsigned long  dur; //milliseconds
@@ -61,7 +60,7 @@ short	init_philos(t_info *info)
 		if ( pthread_mutex_init(&(info->philos[i].last_meal_mutex), NULL)
 || pthread_mutex_init(&(info->philos[i].meal_counter_mutex), NULL)
 || pthread_mutex_init(&(info->forks[i]), NULL))
-		return (1)
+		return (1);
 	}
 	i = 0;
 	while (i < info->amount_philo && !pthread_create(&info->philos[i].thread, NULL, start_simulation, &info->philos[i]))
@@ -70,12 +69,12 @@ short	init_philos(t_info *info)
 }
 
 //return 1(error),  0(ok)
-short print_msg(t_info *info, char *s, unsigned long long time)
+short	print_msg(t_info *info, int index, char *s, unsigned long time)
 {
     if (!pthread_mutex_lock(info->print_mutex))
     {
         if (death_occurred(info))
-            printf ("%llu ms, %d %s\n", time, info->philos->seat, s);
+            printf ("%lu ms, %d %s\n", time, index, s);
         return(pthread_mutex_unlock(info->print_mutex));
     }
     return (1);
@@ -83,20 +82,13 @@ short print_msg(t_info *info, char *s, unsigned long long time)
 
 void	my_usleep(t_philo *philo, unsigned long t)
 {
-	//write our own usleep i think i know why
+	unsigned long	time;
+
+	time = my_curr_time();
+	while (!death_occurred(philo->info))
+	{
+		if (my_curr_time() - time >= t)
+			break ;
+		usleep(50);
+	}
 }
-
-
-
-// void	my_usleep(t_philo *philo, unsigned long long t)
-// {
-// 	unsigned long	time;
-
-// 	time = my_gettime();
-// 	while (!is_died(philo))
-// 	{
-// 		if (my_gettime() - time >= t)
-// 			break ;
-// 		usleep(50);
-// 	}
-// }

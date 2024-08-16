@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:59:14 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/15 20:40:12 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:48:19 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,23 @@
 short	eating(t_philo *philo) 
 {
 	if (!pthread_mutex_lock(philo->fork_r_mutex))
-		print_msg(philo->info, philo->seat, "has taken a fork");
+		print_msg(philo->info, philo->seat, "has taken a fork", my_curr_time());
 	else
 		return (-1);
 	if (philo->info->amount_philo == 1)
 		return(pthread_mutex_unlock(philo->fork_r_mutex));
 	if (!pthread_mutex_lock(philo->fork_l_mutex))
 	{
-		print_msg(philo->info, philo->seat, "has taken a fork");
-		print_msg(philo->info, philo->seat, "is eating");
-		// ft_usleep(philo->info->eat_duration, philo->info);
+		print_msg(philo->info, philo->seat, "has taken a fork", my_curr_time());
+		print_msg(philo->info, philo->seat, "is eating", my_curr_time());
+		// my_usleep(philo->info->eat_duration, philo->info);
 	}
 	else
 		return (1);
 	if (!pthread_mutex_unlock(philo->fork_r_mutex) && !pthread_mutex_unlock(philo->fork_l_mutex))
 	{
 		if (!pthread_mutex_lock(&(philo->meal_counter_mutex)))
-			philo->meal_counter_mutex++;
+			philo->meal_counter++;
 		return(pthread_mutex_unlock(&(philo->meal_counter_mutex)), 1);
 	}
 	else
@@ -57,11 +57,11 @@ void	*start_simulation(void *arg)
 	philo->fork_l_mutex = &(philo->info->forks[philo->seat]);
 	if ((philo -> seat + 1) % 2 == 0)
 		usleep(100);
-	while (!is_fine(philo->info))
+	//SIGSEGV
+	while (is_fine(philo->info)) //error 1,  ok 0 
 	{
-		if (!eating(philo, left_fork, right_fork))
+		if (eating(philo)) //error 1,  ok 0
 			return (0);
-		printf("Cool\n");
 	}
-	return (arg);
+	return (0);
 }

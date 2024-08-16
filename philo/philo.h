@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/15 20:37:29 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:15:28 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,13 @@ short   args_distribute(t_info *info, char **argv);
 short   init_philos(t_info *info);
 
 // *check*
-short   is_fine(t_philo philo->info);
+short   is_fine(t_info *info);
 int     death_occurred(t_info *info);
 
 // *main*
 unsigned long   my_curr_time(void);
 void            *start_simulation(void *info);
-short           print_msg(t_info *info, char *s, unsigned long long time);
+short           print_msg(t_info *info, int index, char *s, unsigned long time);
 short	        eating(t_philo *philo);
 void            my_usleep(t_philo *philo, unsigned long time);
 

@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 19:01:29 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/15 20:38:58 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/16 18:19:40 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int death_occurred(t_info *info)
         if ((int)(my_curr_time() - info->philos[i].last_meal) >= info->die_duration)
         {
             pthread_mutex_lock(info->end_mutex);
-            info->end = 1;
+            info->end = -1; //-1 error 0 success
             pthread_mutex_unlock(info->end_mutex);
             pthread_mutex_lock(info->print_mutex);
             printf("%lu %d dead\n", my_curr_time(), info->philos[i].seat);
@@ -69,14 +69,15 @@ int death_occurred(t_info *info)
 
 //flag => (philos->end) will contain -1 0;
 //return 1(error), 0(ok), -1();
-short   is_fine(t_philo philo->info)
+short   is_fine(t_info *info)
 {
     short   flag;
 
-    if (!pthread_mutex_lock(&(philos->end_mutex)))
+    flag = 0;
+    if (!pthread_mutex_lock(info->end_mutex))
     {
-        flag = philos->end;
-        if (!pthread_mutex_unlock(&(philos->end_mutex)))
+        flag = info->end;
+        if (!pthread_mutex_unlock(info->end_mutex))
             return (flag);
         else
             return (1);

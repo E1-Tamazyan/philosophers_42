@@ -11,30 +11,41 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+//2 functions
 
-// short	eating(t_philo *philo, pthread_mutex_t *l_fork, pthread_mutex_t *r_fork)
-// {
-// 	pthread_mutex_lock(r_fork);
-// 	print(philo->data, philo->index, "has taken a fork");
-// 	if (philo->data->number_of_philos == 1)
-// 	{
-// 		pthread_mutex_unlock(r_fork);
-// 		return (0);
-// 	}
-// 	pthread_mutex_lock(l_fork);
-// 	print(philo->data, philo->index, "has taken a fork");
-// 	print(philo->data, philo->index, "is eating");
-// 	ft_usleep(philo->data->time_to_eat, philo->data);
-// 	pthread_mutex_unlock(r_fork);
-// 	pthread_mutex_unlock(l_fork);
-// 	pthread_mutex_lock(&(philo->number_of_times_he_ate_mutex));
-// 	philo->number_of_times_he_ate++;
-// 	pthread_mutex_unlock(&(philo->number_of_times_he_ate_mutex));
-// 	return (1);
-// }
-//time_to_die amount_eat dead_ocrd
+//return 0(ok) and anything else (error)
+// *** can check msgs, too ***
+short	eating(t_philo *philo) 
+{
+	if (!pthread_mutex_lock(philo->fork_r_mutex))
+		print_msg(philo->info, philo->seat, "has taken a fork");
+	else
+		return (-1);
+	if (philo->info->amount_philo == 1)
+		return(pthread_mutex_unlock(philo->fork_r_mutex));
+	if (!pthread_mutex_lock(philo->fork_l_mutex))
+	{
+		print_msg(philo->info, philo->seat, "has taken a fork");
+		print_msg(philo->info, philo->seat, "is eating");
+		// ft_usleep(philo->info->eat_duration, philo->info);
+	}
+	else
+		return (1);
+	if (!pthread_mutex_unlock(philo->fork_r_mutex) && !pthread_mutex_unlock(philo->fork_l_mutex))
+	{
+		if (!pthread_mutex_lock(&(philo->meal_counter_mutex)))
+			philo->meal_counter_mutex++;
+		return(pthread_mutex_unlock(&(philo->meal_counter_mutex)), 1);
+	}
+	else
+		return (1);
+	return (0);
+}
 
-void *start_simulation(void *arg)
+//the cases the simulation will stop
+//in my situation
+//usleep returns 0: Success ,-1: Failure
+void	*start_simulation(void *arg)
 {
     t_philo *philo;
 
@@ -46,9 +57,10 @@ void *start_simulation(void *arg)
 	philo->fork_l_mutex = &(philo->info->forks[philo->seat]);
 	if ((philo -> seat + 1) % 2 == 0)
 		usleep(100);
-	// if (!philos->)
-	if (!is_fine(philo->info))
+	while (!is_fine(philo->info))
 	{
+		if (!eating(philo, left_fork, right_fork))
+			return (0);
 		printf("Cool\n");
 	}
 	return (arg);

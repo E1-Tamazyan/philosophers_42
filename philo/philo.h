@@ -42,8 +42,8 @@ typedef struct      s_info
     int             die_duration;
     int             eat_duration;
     int             sleep_duration;
-    int             end;
-    pthread_mutex_t *end_flag;
+    int             end; //0 || -1 | //time_to_die amount_eat dead_ocrd if sb is ko
+    pthread_mutex_t *end_mutex;
     int             amount_eat;
     pthread_mutex_t *forks;
     t_philo         *philos;
@@ -61,12 +61,13 @@ short   init_philos(t_info *info);
 
 // *check*
 short   is_fine(t_philo philo->info);
-int     dead_occurred(t_info *info)
+int     death_occurred(t_info *info);
 
 // *main*
 unsigned long   my_curr_time(void);
 void            *start_simulation(void *info);
-void            print_msg(t_info *info, char *s, unsigned long long time);
-// short	        eating(t_philo *philo, pthread_mutex_t *l_fork, pthread_mutex_t *r_fork);
+short           print_msg(t_info *info, char *s, unsigned long long time);
+short	        eating(t_philo *philo);
+void            my_usleep(t_philo *philo, unsigned long time);
 
 #endif

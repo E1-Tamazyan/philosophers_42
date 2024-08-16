@@ -20,10 +20,10 @@ int main(int argc, char **argv)
     int     i;
         
     i = 0;
-    if(!args_inspect(argc, argv))
+    if(args_inspect(argc, argv))
         return (1 && printf("Invalid arguments\n"));
-    if(!args_distribute(&info, argv))
-        return (1);
+    if(args_distribute(&info, argv))
+        return (1 && printf("Invalid count of meal\n"));
     if(!init_philos(&info))
         return (1);
     printf("Success\n");

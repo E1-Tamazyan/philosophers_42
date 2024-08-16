@@ -12,35 +12,15 @@
 
 #include "philo.h"
 
-//4 functions
-
-short   is_fine(t_philo philo->info)
-{
-    int flag;
-    
-    pthread_mutex_lock(&(philos->end_mutex));
-	flag = philos->end;
-	pthread_mutex_unlock(&(philos->end_mutex));
-}
-
-// int	finished(t_philosophers *philos)
-// {
-// 	int	finished;
-
-// 	pthread_mutex_lock(&(philos->finish_mutex));
-// 	finished = philos->finish;
-// 	pthread_mutex_unlock(&(philos->finish_mutex));
-// 	return (finished);
-// }
-
-
-short args_inspect(int argc, char **argv)
+//3 functions
+//error (1), ok(0)
+short   args_inspect(int argc, char **argv)
 {
     size_t  i;
     size_t  j;
 
     if (argc == 1 || (argc == 2 &&  !(argv[1][0])))
-        return (0);
+        return (1);
     if (argc == 5 || argc == 6)
     {
         i = 1;
@@ -57,12 +37,12 @@ short args_inspect(int argc, char **argv)
             }
             i++;
         }
-        return (1);
+        return (0);
     }
-    return (0);
+    return (1);
 }
-
-int dead_occurred(t_info *info)
+// *************** check locks ***************
+int death_occurred(t_info *info)
 {
     int i;
 
@@ -87,10 +67,19 @@ int dead_occurred(t_info *info)
     return (0);
 }
 
-void print_msg(t_info *info, char *s, unsigned long long time)
+//flag => (philos->end) will contain -1 0;
+//return 1(error), 0(ok), -1();
+short   is_fine(t_philo philo->info)
 {
-    pthread_mutex_lock(info->print_mutex);
-    if (dead_occurred(info))
-        printf ("%llu ms, %d %s\n", time, info->philos->seat, s);
-    pthread_mutex_unlock(info->print_mutex);
+    short   flag;
+
+    if (!pthread_mutex_lock(&(philos->end_mutex)))
+    {
+        flag = philos->end;
+        if (!pthread_mutex_unlock(&(philos->end_mutex)))
+            return (flag);
+        else
+            return (1);
+    }
+    return (flag);
 }

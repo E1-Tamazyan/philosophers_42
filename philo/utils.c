@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-//3 functions
+//5 functions
 
 unsigned long    my_curr_time(void)
 {
@@ -23,7 +23,8 @@ unsigned long    my_curr_time(void)
     dur = (time.tv_sec * 1000) + (time.tv_usec / 1000);
     return (dur);
 }
-
+// info->dead_ocrd_mutex, info->print_mutex is not inited, in case SIGSEGV
+// 1(error), 0(ok)
 short	args_distribute(t_info *info, char **argv)
 {
 	info->amount_philo = ft_atoi(argv[1]);
@@ -31,19 +32,15 @@ short	args_distribute(t_info *info, char **argv)
 	info->eat_duration = ft_atoi(argv[3]);
 	info->sleep_duration = ft_atoi(argv[4]);
 	info->amount_eat = 0;
-	//SIGSEGV hereeeeee // ==4958==The signal is caused by a WRITE memory access.
-						// ==4958==Hint: address points to the zero page.
-	// pthread_mutex_init(info->dead_ocrd_mutex, NULL);
-	// pthread_mutex_init(info->print_mutex, NULL);
 	if (argv[5])
 	{
 		info->amount_eat = ft_atoi(argv[5]);
 		if (!info->amount_eat)
-			return (0);
+			return (1);
 	}
-	return (1);
+	return (0);
 }
-
+//return 1(error) / 0(ok)
 short	init_philos(t_info *info)
 {
 	int	i;
@@ -61,12 +58,45 @@ short	init_philos(t_info *info)
 		info->philos[i].info = info;
 		info->philos[i].last_meal = 0;
 		info->philos[i].meal_counter = 0;
-		pthread_mutex_init(&(info->philos[i].last_meal_mutex), NULL);
-		pthread_mutex_init(&(info->philos[i].meal_counter_mutex), NULL);
-		pthread_mutex_init(&(info->forks[i]), NULL);
+		if ( pthread_mutex_init(&(info->philos[i].last_meal_mutex), NULL)
+|| pthread_mutex_init(&(info->philos[i].meal_counter_mutex), NULL)
+|| pthread_mutex_init(&(info->forks[i]), NULL))
+		return (1)
 	}
-	i = -1;
-	while (++i < info->amount_philo)
-		pthread_create(&info->philos[i].thread, NULL, start_simulation, &info->philos[i]);
-	return (1);
+	i = 0;
+	while (i < info->amount_philo && !pthread_create(&info->philos[i].thread, NULL, start_simulation, &info->philos[i]))
+		++i;
+	return (0);
 }
+
+//return 1(error),  0(ok)
+short print_msg(t_info *info, char *s, unsigned long long time)
+{
+    if (!pthread_mutex_lock(info->print_mutex))
+    {
+        if (death_occurred(info))
+            printf ("%llu ms, %d %s\n", time, info->philos->seat, s);
+        return(pthread_mutex_unlock(info->print_mutex));
+    }
+    return (1);
+}
+
+void	my_usleep(t_philo *philo, unsigned long t)
+{
+	//write our own usleep i think i know why
+}
+
+
+
+// void	my_usleep(t_philo *philo, unsigned long long t)
+// {
+// 	unsigned long	time;
+
+// 	time = my_gettime();
+// 	while (!is_died(philo))
+// 	{
+// 		if (my_gettime() - time >= t)
+// 			break ;
+// 		usleep(50);
+// 	}
+// }

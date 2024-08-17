@@ -42,7 +42,7 @@ typedef struct      s_info
     int             die_duration;
     int             eat_duration;
     int             sleep_duration;
-    int             end; //0 || -1 | //time_to_die amount_eat dead_ocrd if sb is ko
+    int             end; //-1 error 0 success | //time_to_die amount_eat dead_ocrd if sb is ko
     pthread_mutex_t *end_mutex;
     int             amount_eat;
     pthread_mutex_t *forks;

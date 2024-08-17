@@ -58,7 +58,7 @@ void	*start_simulation(void *arg)
 	if ((philo -> seat + 1) % 2 == 0)
 		usleep(100);
 	//SIGSEGV
-	while (is_fine(philo->info)) //error 1,  ok 0 
+	while (is_fine(philo->info)) //error -1,  ok 0 
 	{
 		if (eating(philo)) //error 1,  ok 0
 			return (0);

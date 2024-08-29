@@ -6,7 +6,7 @@
 /*   By: etamazya <etamazya@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 18:11:16 by etamazya          #+#    #+#             */
-/*   Updated: 2024/08/16 18:15:28 by etamazya         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:31:26 by etamazya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,54 +20,56 @@
 # include <sys/time.h>
 # include <string.h>
 
-struct          s_info;
+struct	s_info;
 
-typedef struct  s_philo
+typedef struct s_philo
 {
-    int             seat;
-    unsigned long   last_meal;
-    int             meal_counter;
-    pthread_t       thread;
-    pthread_mutex_t last_meal_mutex;
-    pthread_mutex_t meal_counter_mutex;
-    pthread_mutex_t *fork_r_mutex;
-    pthread_mutex_t *fork_l_mutex;
-    struct s_info   *info;
-}                   t_philo;
+	int				seat;
+	unsigned long	last_meal;
+	int				meal_counter;
+	int				*is_dead;
+	pthread_t		t;
+	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	meal_counter_mutex;
+	pthread_mutex_t	*fork_r_mutex;
+	pthread_mutex_t	*fork_l_mutex;
+	struct s_info	*info;
+}					t_philo;
 
-typedef struct      s_info
+typedef struct s_info
 {
-    long long       start_day;
-    int             amount_philo;
-    int             die_duration;
-    int             eat_duration;
-    int             sleep_duration;
-    int             end; //-1 error 0 success | //time_to_die amount_eat dead_ocrd if sb is ko
-    pthread_mutex_t *end_mutex;
-    int             amount_eat;
-    pthread_mutex_t *forks;
-    t_philo         *philos;
-    pthread_mutex_t *print_mutex;
-    pthread_mutex_t sync_mutex; //dunno where to use
-}                   t_info;
+	unsigned long	start_day;
+	int				amount_philo;
+	int				die_duration;
+	int				eat_duration;
+	int				sleep_duration;
+	int				end;
+	int				amount_eat;
+	t_philo			*philos;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	end_mutex;
+}					t_info;
 
 // *parsing*
-int     ft_atoi(char *str);
-short   args_inspect(int argc, char **argv);
-short   args_distribute(t_info *info, char **argv);
+int				ft_atoi(char *str);
+short			args_inspect(int argc, char **argv);
+short			args_distribute(t_info *info, char **argv);
 
 // *data_init*
-short   init_philos(t_info *info);
+short			init_philos(t_info *info, int i);
 
 // *check*
-short   is_fine(t_info *info);
-int     death_occurred(t_info *info);
+int				is_fine(t_philo *philo);
+int				death_occurred(t_info *info, int i);
+short			infinite_loop_destroy(t_info *info);
+int				check_meal(t_info *info, int i);
 
-// *main*
-unsigned long   my_curr_time(void);
-void            *start_simulation(void *info);
-short           print_msg(t_info *info, int index, char *s, unsigned long time);
-short	        eating(t_philo *philo);
-void            my_usleep(t_philo *philo, unsigned long time);
+// *utils*
+unsigned long	my_time(void);
+void			*simul(void *info);
+short			print_msg(t_philo *p, int i, char *s, unsigned long t);
+short			eating(t_philo *philo);
+void			my_usleep(unsigned long time);
 
 #endif
